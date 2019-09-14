@@ -22,8 +22,8 @@
 	<main role="main" class="container">
 
 	<div class="starter-template">
-		<h2>Questa è la lista delle città relativa allo stato selezionato: </h2>
-		<form th:action="@{/inserimento}">
+		<h2>Questa è la lista delle città relativa allo stato <span th:text="${stato}"></span> </h2>
+		<form th:action="@{/inserimento}" method="post">
 			
 			<table border="1" style="width:300px" align="center">
 			 <p th:each="citta : ${listaCitta}">
@@ -39,7 +39,8 @@
         <input type="text" name="cittaInserita">
         <h2>Inserisci distretto:</h2>
         <input type="text" name="distrettoInserito">
-			
+      
+			<input type="hidden" name="stato" th:value="${stato}">
 			 <input class="btn btn-primary" type="submit" value="submit" />
 	</form>
 	</div>

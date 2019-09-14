@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GestioneDb {
 
@@ -60,4 +62,46 @@ public class GestioneDb {
 
 	}
 
+	public static int randomPop() throws ClassNotFoundException, SQLException {
+		int max = 0;
+		int min = 0;
+		String query1 = "select Population from world.city order by Population desc limit 1;";
+		PreparedStatement ps = getConnection().prepareStatement(query1);
+		ResultSet result = ps.executeQuery();
+		if (result.next()) {
+			max = result.getInt(1);
+		}
+
+		String query2 = "select Population from world.city order by Population asc limit 1;";
+		PreparedStatement ps2 = getConnection().prepareStatement(query2);
+		ResultSet result2 = ps2.executeQuery();
+		if (result2.next()) {
+			min = result.getInt(1);
+		} 
+		int random = ThreadLocalRandom.current().nextInt(min, max + 1);
+		return random;
+	}
+
+	public static String getCode(String stato) throws ClassNotFoundException, SQLException {
+		String code = null;
+		String query1 = "select Code from world.country where Name=?;";
+		PreparedStatement ps = getConnection().prepareStatement(query1);
+		ps.setString(1, stato);
+		ResultSet result = ps.executeQuery();
+		while (result.next()) {
+			code = result.getString(1);
+		}
+		return code;
+	}
+
+	public static void insertCitta(String cittaInserita, String countryCode, String distretto, int popolazione)
+			throws ClassNotFoundException, SQLException {
+		String query = "INSERT INTO city (Name,CountryCode,District,Population) VALUES (?,?,?,?);";
+		PreparedStatement ps = getConnection().prepareStatement(query);
+		ps.setString(1, cittaInserita);
+		ps.setString(2, countryCode);
+		ps.setString(3, distretto);
+		ps.setInt(4, popolazione);
+		ps.executeUpdate();
+	}
 }
