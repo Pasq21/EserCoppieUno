@@ -35,6 +35,16 @@ public class WelcomeController {
     @GetMapping("/sceltadue")
     public String hellodue(
     		@RequestParam(name = "stato") String stato, Model model)throws ClassNotFoundException, SQLException {
+    	List<String> citta=new ArrayList<String>();
+    	citta.addAll(GestioneDb.getCitta(stato));
+    	model.addAttribute("listaCitta", citta);
 				return "sceltadue";
     }
+    
+    @GetMapping("/inserimento")
+    public String hellotre(
+    		@RequestParam(name = "cittaInserita") String cittaInserita, @RequestParam(name = "distrettoInserito") String distretto, Model model) {
+    
+   return "inserimento"; 
+}
 }

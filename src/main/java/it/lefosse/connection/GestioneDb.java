@@ -22,29 +22,42 @@ public class GestioneDb {
 	}
 
 	public static List<String> getContinent() throws ClassNotFoundException, SQLException {
-		List<String> listaContinent=new ArrayList<String>();
-		String query="SELECT distinct Continent from country";
-		PreparedStatement ps=getConnection().prepareStatement(query);
-		ResultSet result= ps.executeQuery();
+		List<String> listaContinent = new ArrayList<String>();
+		String query = "SELECT distinct Continent from country";
+		PreparedStatement ps = getConnection().prepareStatement(query);
+		ResultSet result = ps.executeQuery();
 		while (result.next()) {
-			String name=result.getString(1);
+			String name = result.getString(1);
 			listaContinent.add(name);
 		}
 		return listaContinent;
 	}
-	
+
 	public static List<String> getStati(String continente) throws SQLException, ClassNotFoundException {
-		List<String> stati=new ArrayList<String>();
-		String query="select Name from world.country where Continent=?";
-		PreparedStatement ps=getConnection().prepareStatement(query);
+		List<String> stati = new ArrayList<String>();
+		String query = "select Name from world.country where Continent=?";
+		PreparedStatement ps = getConnection().prepareStatement(query);
 		ps.setString(1, continente);
-		ResultSet result= ps.executeQuery();
-		while(result.next()) {
-			String stato=result.getString(1);
+		ResultSet result = ps.executeQuery();
+		while (result.next()) {
+			String stato = result.getString(1);
 			stati.add(stato);
 		}
 		return stati;
-		
 	}
-	
+
+	public static List<String> getCitta(String stato) throws ClassNotFoundException, SQLException {
+		List<String> listaCitta = new ArrayList<String>();
+		String query = "select Name from world.city where city.CountryCode=(SELECT Code from world.country where Name=?);";
+		PreparedStatement ps = getConnection().prepareStatement(query);
+		ps.setString(1, stato);
+		ResultSet result = ps.executeQuery();
+		while (result.next()) {
+			String citta = result.getString(1);
+			listaCitta.add(citta);
+		}
+		return listaCitta;
+
+	}
+
 }

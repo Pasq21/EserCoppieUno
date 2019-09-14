@@ -1,10 +1,55 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>Terza pagina</title>
+
+<link rel="stylesheet"
+	th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/main.css}" />
+
 </head>
+
 <body>
 
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+		<a class="navbar-brand" href="#">Pete.com</a>
+	</nav>
+
+	<main role="main" class="container">
+
+	<div class="starter-template">
+		<h2>Questa è la lista delle città relativa allo stato selezionato: </h2>
+		<form th:action="@{/inserimento}">
+			
+			<table border="1" style="width:300px" align="center">
+			 <p th:each="citta : ${listaCitta}">
+			 <tr>
+			 
+			 <th th:text="${citta}" ></th>
+			 </tr>
+			</table>
+			 
+        </p>
+        
+        <h2>Ora inserisci una città:</h2>
+        <input type="text" name="cittaInserita">
+        <h2>Inserisci distretto:</h2>
+        <input type="text" name="distrettoInserito">
+			
+			 <input class="btn btn-primary" type="submit" value="submit" />
+	</form>
+	</div>
+	
+
+
+	</main>
+	<!-- /.container -->
+
+	<script type="text/javascript"
+		th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
 </body>
 </html>
