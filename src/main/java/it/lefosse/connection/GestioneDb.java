@@ -62,22 +62,26 @@ public class GestioneDb {
 
 	}
 
-	public static int randomPop() throws ClassNotFoundException, SQLException {
+	public static int randomPop(String stato,String code) throws ClassNotFoundException, SQLException {
 		int max = 0;
 		int min = 0;
-		String query1 = "select Population from world.city order by Population desc limit 1;";
+	
+		String query1 = "select Population from world.city where CountryCode=? order by Population desc limit 1;";
 		PreparedStatement ps = getConnection().prepareStatement(query1);
+		ps.setString(1, code);
 		ResultSet result = ps.executeQuery();
 		if (result.next()) {
 			max = result.getInt(1);
 		}
 
-		String query2 = "select Population from world.city order by Population asc limit 1;";
+		String query2 = "select Population from world.city where CountryCode=? order by Population asc limit 1;";
 		PreparedStatement ps2 = getConnection().prepareStatement(query2);
+		ps2.setString(1, code);
 		ResultSet result2 = ps2.executeQuery();
 		if (result2.next()) {
-			min = result.getInt(1);
+			min = result2.getInt(1);
 		} 
+		
 		int random = ThreadLocalRandom.current().nextInt(min, max + 1);
 		return random;
 	}
@@ -96,12 +100,13 @@ public class GestioneDb {
 
 	public static void insertCitta(String cittaInserita, String countryCode, String distretto, int popolazione)
 			throws ClassNotFoundException, SQLException {
-		String query = "INSERT INTO city (Name,CountryCode,District,Population) VALUES (?,?,?,?);";
+		String query = "INSERT INTO city (Population,CountryCode,District,Name) VALUES (?,?,?,?);";
 		PreparedStatement ps = getConnection().prepareStatement(query);
-		ps.setString(1, cittaInserita);
+		ps.setInt(1, popolazione);
 		ps.setString(2, countryCode);
 		ps.setString(3, distretto);
-		ps.setInt(4, popolazione);
+		ps.setString(4, cittaInserita);
 		ps.executeUpdate();
+	
 	}
 }

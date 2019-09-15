@@ -50,8 +50,9 @@ public class WelcomeController {
 			@RequestParam(name = "cittaInserita") String cittaInserita,
 			@RequestParam(name = "distrettoInserito") String distretto, Model model) throws ClassNotFoundException, SQLException {
 			String countryCode=GestioneDb.getCode(stato);
-			int popolazione=GestioneDb.randomPop();
+			int popolazione=GestioneDb.randomPop(stato,countryCode);
 			GestioneDb.insertCitta(cittaInserita, countryCode, distretto, popolazione);
+			
 		return "inserimento";
 	}
 
